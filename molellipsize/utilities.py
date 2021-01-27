@@ -6,6 +6,7 @@ This module defines general-purpose objects, functions and classes.
 import numpy as np
 from rdkit.Chem import AllChem as Chem
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def ETKDG_UFF_conformers(rdkitmol, num_conformers, randomseed):
@@ -74,7 +75,7 @@ def plot_diameters(diameters, filename):
     print(d1, d2, d3)
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    width = 0.4
+    width = 0.2
     xlim = (0, round(max(d3)+1, 0))
     X_bins = np.arange(xlim[0], xlim[1], width)
     hist, bin_edges = np.histogram(a=d1, bins=X_bins)
@@ -84,8 +85,10 @@ def plot_diameters(diameters, filename):
         align='edge',
         alpha=1.0,
         width=width,
-        color='gold',
-        edgecolor='k'
+        color='none',
+        edgecolor='gold',
+        linewidth=3,
+        label='d1',
     )
     hist, bin_edges = np.histogram(a=d2, bins=X_bins)
     ax.bar(
@@ -94,8 +97,10 @@ def plot_diameters(diameters, filename):
         align='edge',
         alpha=1.0,
         width=width,
-        color='palegreen',
-        edgecolor='k'
+        color='none',
+        edgecolor='palegreen',
+        linewidth=3,
+        label='d2',
     )
     hist, bin_edges = np.histogram(a=d3, bins=X_bins)
     ax.bar(
@@ -104,15 +109,86 @@ def plot_diameters(diameters, filename):
         align='edge',
         alpha=1.0,
         width=width,
-        color='coral',
-        edgecolor='k'
+        color='none',
+        edgecolor='coral',
+        linewidth=3,
+        label='d3',
     )
     # Set number of ticks for x-axis
     ax.tick_params(axis='both', which='major', labelsize=16)
-    ax.set_xlabel(r'molecular diameter [$\mathrm{\AA}]', fontsize=16)
+    ax.set_xlabel(r'molecular diameter [$\mathrm{\AA}$]', fontsize=16)
     ax.set_ylabel('count', fontsize=16)
     ax.set_xlim(xlim)
     ax.set_ylim(0, None)
+    ax.legend(fontsize=16)
 
     fig.tight_layout()
     fig.savefig(filename, dpi=720, bbox_inches='tight')
+
+
+def plot_ellipsoid(
+    center,
+    diameter,
+    rotation,
+    plotAxes=False,
+    cageColor='k',
+    cageAlpha=0.2,
+):
+    """
+    Plot an ellipsoid.
+
+    """
+
+    radii = [i/2 for i in diameter]
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    u = np.linspace(0.0, 2.0 * np.pi, 100)
+    v = np.linspace(0.0, np.pi, 100)
+
+    # cartesian coordinates that correspond to the spherical
+    # angles:
+    x = radii[0] * np.outer(np.cos(u), np.sin(v))
+    y = radii[1] * np.outer(np.sin(u), np.sin(v))
+    z = radii[2] * np.outer(np.ones_like(u), np.cos(v))
+    # rotate accordingly
+    for i in range(len(x)):
+        for j in range(len(x)):
+            [x[i, j], y[i, j], z[i, j]] = np.dot(
+                [x[i, j], y[i, j], z[i, j]],
+                rotation
+            ) + center
+
+    if plotAxes:
+        # make some purdy axes
+        axes = np.array([
+            [radii[0], 0.0, 0.0],
+            [0.0, radii[1], 0.0],
+            [0.0, 0.0, radii[2]]
+        ])
+        # rotate accordingly
+        for i in range(len(axes)):
+            axes[i] = np.dot(axes[i], rotation)
+
+        # plot axes
+        for p in axes:
+            X3 = np.linspace(-p[0], p[0], 100) + center[0]
+            Y3 = np.linspace(-p[1], p[1], 100) + center[1]
+            Z3 = np.linspace(-p[2], p[2], 100) + center[2]
+            ax.plot(X3, Y3, Z3, color=cageColor)
+
+    # plot ellipsoid
+    ax.plot_wireframe(
+        x, y, z,
+        rstride=4,
+        cstride=4,
+        color=cageColor,
+        alpha=cageAlpha
+    )
+
+    ax.set_xlabel(r'$x$ [$\mathrm{\AA}$]')
+    ax.set_ylabel(r'$y$ [$\mathrm{\AA}$]')
+    ax.set_zlabel(r'$z$ [$\mathrm{\AA}$]')
+
+    return fig, ax
