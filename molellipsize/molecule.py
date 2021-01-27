@@ -15,6 +15,7 @@ from rdkit.Geometry import rdGeometry
 import numpy as np
 
 from .ellipsefitter import EllipsoidTool
+from .utilities import plot_ellipsoid
 
 
 class Molecule:
@@ -95,7 +96,29 @@ class Molecule:
         )
         return box, sideLen, shape
 
-    def get_diameters(self, vdwscale, boxmargin, spacing):
+    def get_hitpoints(self, shape):
+        """
+        Get points with value > 2 that are within vdw shape.
+
+        """
+
+        hit_points = []
+        for idx in range(shape.GetSize()):
+            pt = shape.GetGridPointLoc(idx)
+            value = shape.GetVal(idx)
+            if value > 2:
+                point = np.array([pt.x, pt.y, pt.z])
+                hit_points.append(point)
+        hit_points = np.asarray(hit_points)
+
+        return hit_points
+
+    def get_ellipsoids(
+        self,
+        vdwscale,
+        boxmargin,
+        spacing,
+    ):
         """
         Get XX for all conformers in mol.
 
@@ -111,7 +134,7 @@ class Molecule:
 
         """
 
-        conf_diameters = {}
+        conf_ellipsoids = {}
         for cid in self._conformers:
             conformer = self._rdkitmol.GetConformer(cid)
             box, sideLen, shape = self.get_molecule_shape(
@@ -122,39 +145,60 @@ class Molecule:
                 spacing=spacing,
             )
 
-            # Get ellipsoid fitting all points with value > 2.
-            # - i.e. within vdw shape.
-            hit_points = []
-            for idx in range(shape.GetSize()):
-                pt = shape.GetGridPointLoc(idx)
-                value = shape.GetVal(idx)
-                if value > 2:
-                    point = np.array([pt.x, pt.y, pt.z])
-                    hit_points.append(point)
-            hit_points = np.asarray(hit_points)
+            hit_points = self.get_hitpoints(shape)
 
             # Find the ellipsoid that envelopes all hit points.
             ET = EllipsoidTool()
-            (center, radii, rotation) = ET.getMinVolEllipse(
-                P=hit_points,
+            (center, radii, rotation) = ET.get_min_vol_ellipse(
+                points=hit_points,
                 tolerance=0.01,
-                do_step_plot=False,
             )
+            diameters = list(np.sort(radii)*2)
 
-            conf_diameters[cid] = sorted(np.asarray(radii)*2)
+            conf_ellipsoids[cid] = (center, diameters, rotation)
 
-        return conf_diameters
+        return conf_ellipsoids
 
-    def draw_hitpoints(self):
+    def draw_conformer_hitpoints(
+        self,
+        cid,
+        center,
+        diameter,
+        rotation,
+        vdwscale,
+        boxmargin,
+        spacing,
+        filename,
+    ):
         """
         Draw hitpoints of ellipsoid fit in plot.
 
         """
-        pass
-        hit_point_plot(
-            hit_points,
-            ET,
-            center,
-            radii,
-            rotation
+
+        conformer = self._rdkitmol.GetConformer(cid)
+        box, sideLen, shape = self.get_molecule_shape(
+            conformer=conformer,
+            cid=cid,
+            vdwscale=vdwscale,
+            boxmargin=boxmargin,
+            spacing=spacing,
         )
+
+        hit_points = self.get_hitpoints(shape)
+        fig, ax = plot_ellipsoid(
+            center,
+            diameter,
+            rotation,
+        )
+        ax.scatter(
+            hit_points[:, 0], hit_points[:, 1], hit_points[:, 2],
+            color='g',
+            marker='x',
+            edgecolor=None,
+            s=50,
+            alpha=0.5,
+        )
+        ax.set_aspect('equal', 'box')
+
+        fig.tight_layout()
+        fig.savefig(filename, dpi=720, bbox_inches='tight')
