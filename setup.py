@@ -9,9 +9,7 @@ setuptools.setup(
     url="https://github.com/andrewtarzia/mol-ellipsize",
     packages=setuptools.find_packages(),
     install_requires=(
-        'scipy',
         'matplotlib',
-        'networkx',
         'numpy',
     ),
     classifiers=[
