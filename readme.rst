@@ -1,8 +1,3 @@
-#
-
-
-
-
 mol-ellipsize
 =============
 
@@ -10,26 +5,69 @@ mol-ellipsize
 
 Molecular size calculation based on ellipsoid fitting over N conformers.
 
+This work was developed for the work in my repository `enzyme-screen` for screening enzymatic reactions for MOF@Enzyme systems.
+
 Please contact me with any questions (<andrew.tarzia@gmail.com>) or submit an issue!
 
 Installation
 ------------
 
-Install using pip:
+To get ``stk``, you can install it with pip::
 
-    pip install mol-ellipsize
+    $ pip install mol-ellipsize
+
+Make sure you also install rdkit, which is a dependency::
+
+    $ conda install -c rdkit rdkit=2020
 
 Algorithm
 ---------
 
+This code focusses on the calculation of the size of molecules within a conformer ensemble based on the fit of an ellipsoid around the molecules van der Waals cloud.
+Any conformer ensemble can be provided through the rdkit .Molecule and Conformer classes.
+However, helper functions are provided for generating ensembles using rdkit's ETKDG algorithm.
+
+The ellipsoid fitting algorithm was modified from From: https://github.com/minillinim/ellipsoid.
+The code is based on work by Nima Moshtagh <http://www.mathworks.com/matlabcentral/fileexchange/9542> and also by looking at <http://cctbx.sourceforge.net/current/python/scitbx.math.minimum_covering_ellipsoid.html>
+It uses the Khachiyan algorithm to find the minimum volume ellipsoid that encompasses all points given to the function.
+
 Examples
 --------
+
+The base example in ``examples/base_example.py`` shows the usage of this code to calculate the molecular size of molecules from SMILES strings.
+
+A mininum example for calculating the size of 10 conformers of caffeine:
+
+.. code-block:: python
+
+    from rdkit.Chem import AllChem as Chem
+    import molellipsize as mes
+
+
+    rdkitmol = Chem.MolFromSmiles('CN1C=NC2=C1C(=O)N(C(=O)N2C)C')
+    rdkitmol = Chem.AddHs(rdkitmol)
+    Chem.SanitizeMol(rdkitmol)
+    rdkitmol, conformers = mes.ETKDG_UFF_conformers(
+        rdkitmol=rdkitmol,
+        num_conformers=10,
+        randomseed=1000,
+    )
+    mes_mol = mes.Molecule(
+        rdkitmol=rdkitmol,
+        conformers=conformers,
+    )
+    ellipsoids = mes_mol.get_ellipsoids(
+        boxmargin=4.0,
+        vdwscale=0.9,
+        spacing=0.5,
+    )
+    diameters = {i: ellipsoids[i][1] for i in ellipsoids}
 
 
 Contributors and Acknowledgements
 ---------------------------------
 
-I developed this code as a PhD student in the Huang () and Doonan research groups at the University of Adelaide.
+I developed this code as a PhD student in the Huang and Doonan research groups at the University of Adelaide.
 
 License
 -------
