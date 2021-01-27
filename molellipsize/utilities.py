@@ -39,8 +39,8 @@ def plot_shapes(ratios, filename):
     fig, ax = plt.subplots(figsize=(5, 5))
 
     ax.scatter(
-        [ratios[i][1] for i in ratios],
         [ratios[i][0] for i in ratios],
+        [ratios[i][1] for i in ratios],
         c='gold',
         edgecolors='white',
         alpha=1.0,
@@ -72,7 +72,6 @@ def plot_diameters(diameters, filename):
     d1 = [diameters[i][0] for i in diameters]
     d2 = [diameters[i][1] for i in diameters]
     d3 = [diameters[i][2] for i in diameters]
-    print(d1, d2, d3)
 
     fig, ax = plt.subplots(figsize=(8, 5))
     width = 0.2

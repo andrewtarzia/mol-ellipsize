@@ -104,9 +104,9 @@ class Molecule:
 
         hit_points = []
         for idx in range(shape.GetSize()):
-            pt = shape.GetGridPointLoc(idx)
             value = shape.GetVal(idx)
             if value > 2:
+                pt = shape.GetGridPointLoc(idx)
                 point = np.array([pt.x, pt.y, pt.z])
                 hit_points.append(point)
         hit_points = np.asarray(hit_points)
@@ -198,7 +198,6 @@ class Molecule:
             s=50,
             alpha=0.5,
         )
-        ax.set_aspect('equal', 'box')
 
         fig.tight_layout()
         fig.savefig(filename, dpi=720, bbox_inches='tight')

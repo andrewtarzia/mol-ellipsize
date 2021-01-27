@@ -7,7 +7,11 @@ def main():
     dict_of_smiles = {
         'c6h6': 'c1ccccc1',
         'c6h12': 'C1CCCCC1',
+        'c8': 'CCCCCCCC',
+        'caffeine': 'CN1C=NC2=C1C(=O)N(C(=O)N2C)C',
     }
+
+    N = 50
 
     for name in dict_of_smiles:
         smiles = dict_of_smiles[name]
@@ -17,10 +21,9 @@ def main():
         Chem.SanitizeMol(rdkitmol)
         rdkitmol, conformers = mes.ETKDG_UFF_conformers(
             rdkitmol=rdkitmol,
-            num_conformers=10,
+            num_conformers=N,
             randomseed=1000,
         )
-        print(name, [i for i in conformers])
         mes_mol = mes.Molecule(
             rdkitmol=rdkitmol,
             conformers=conformers,
