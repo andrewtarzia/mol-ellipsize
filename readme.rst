@@ -36,7 +36,7 @@ Examples
 
 The base example in ``examples/base_example.py`` shows the usage of this code to calculate the molecular size of molecules from SMILES strings.
 
-A mininum example for calculating the size of 10 conformers of caffeine:
+A minimum example for calculating the size of 10 conformers of caffeine:
 
 .. code-block:: python
 
@@ -63,11 +63,16 @@ A mininum example for calculating the size of 10 conformers of caffeine:
     )
     diameters = {i: ellipsoids[i][1] for i in ellipsoids}
 
+*Adding coordinates and conformers without using RDKit*
+
+The example in ``examples/arbitrary_coordinates.py`` shows the
+fitting of an ellipsoid to arbitrary points with and without the
+definition of a .Molecule.
 
 Contributors and Acknowledgements
 ---------------------------------
 
-I developed this code as a PhD student in the Huang and Doonan research groups at the University of Adelaide.
+I developed this code as a PhD student in the research groups of David Huang (<https://huanggroup.org/>) and Christian Doonan (<http://www.sumbydoonangroup.com/>) at the University of Adelaide.
 
 License
 -------
