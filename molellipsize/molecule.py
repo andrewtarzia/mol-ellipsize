@@ -201,3 +201,12 @@ class Molecule:
 
         fig.tight_layout()
         fig.savefig(filename, dpi=720, bbox_inches='tight')
+
+    def __str__(self):
+        return repr(self)
+
+    def __repr__(self):
+        return (
+            f'<{self.__class__.__name__} at {id(self)}> '
+            f'with {len(self._conformers)} conformers'
+        )
