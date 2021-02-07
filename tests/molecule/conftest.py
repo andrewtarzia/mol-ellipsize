@@ -9,17 +9,20 @@ class CaseData:
 
     Attributes
     ----------
-    molecule : :class:`rdkit.Molecule`
-        The molecule to be tested.
+    atom_atomic_nums : :class:`list`
+        List of atom atomic numbers.
 
-    conformers : :class:`iter`
-        The smiles for the molecule.
+    pos_mat : :class:`iter` of :class:`list`
+        List of atom coordinates.
 
-    has_metal : :class:`bool`
-        ``True`` if a metal atom is in molecule.
+    ellipse_center : :class:`tuple`
+        Center of test molecule's ellipsoid.
 
-    metal_ff : :class:`dict` or :class:`NoneType`
-        The position matrix of the molecule.
+    ellipse_diameters : :class:`tuple`
+        Diameters of test molecule's ellipsoid.
+
+    inertial_ratios : :class:`tuple`
+        Inertial ratios of the test molecule.
 
     """
 
@@ -27,6 +30,7 @@ class CaseData:
         self,
         atom_atomic_nums,
         pos_mat,
+        ellipse_center,
         ellipse_diameters,
         inertial_ratios
     ):
@@ -46,6 +50,7 @@ class CaseData:
 
         self.molecule = mol
         self.conformers = [0]
+        self.ellipse_center = ellipse_center
         self.ellipse_diameters = ellipse_diameters
         self.inertial_ratios = inertial_ratios
 
@@ -58,10 +63,8 @@ class CaseData:
             pos_mat=[
                 [0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0],
             ],
-            ellipse_diameters={
-                'center': [0.50, 0.50, 0.0],
-                'diameters': (2.50904, 3.56057, 3.58628),
-            },
+            ellipse_center=(0.50, 0.50, 0.0),
+            ellipse_diameters=(2.50904, 3.56057, 3.58628),
             inertial_ratios=(0.5, 0.5),
         ),
         # Oblate, but checks that the directionality plays no role,
@@ -71,10 +74,8 @@ class CaseData:
             pos_mat=[
                 [0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1],
             ],
-            ellipse_diameters={
-                'center': [0.0, 0.50, 0.50],
-                'diameters': (2.50904, 3.56057, 3.58628),
-            },
+            ellipse_center=(0.0, 0.50, 0.50),
+            ellipse_diameters=(2.50904, 3.56057, 3.58628),
             inertial_ratios=(0.5, 0.5),
         ),
         # Sphere.
@@ -84,10 +85,8 @@ class CaseData:
                 [1, 1, 1], [1, -1, 1], [-1, 1, 1], [-1, -1, 1],
                 [1, 1, -1], [1, -1, -1], [-1, 1, -1], [-1, -1, -1],
             ],
-            ellipse_diameters={
-                'center': [0.0, 0.0, 0.0],
-                'diameters': (5.29935, 5.33006, 5.35154),
-            },
+            ellipse_center=(0.0, 0.0, 0.0),
+            ellipse_diameters=(5.29935, 5.33006, 5.35154),
             inertial_ratios=(1.0, 1.0),
         ),
         # Prolate.
@@ -96,10 +95,8 @@ class CaseData:
             pos_mat=[
                 [5, 1, 0], [5, -1, 0], [-5, 1, 0], [-5, -1, 0],
             ],
-            ellipse_diameters={
-                'center': [0.0, 0.0, 0.0],
-                'diameters': (3.35897, 5.18066, 17.32586),
-            },
+            ellipse_center=(0.0, 0.0, 0.0),
+            ellipse_diameters=(3.35897, 5.18066, 17.32586),
             inertial_ratios=(0.0, 1.0),
         ),
     ),

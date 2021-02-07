@@ -22,7 +22,7 @@ def test_get_ellipsoids(molecule):
 
     test_center = conf_ellipsoids[0][0]
     for known, test_cent_dim in zip(
-        molecule.ellipse_diameters['center'],
+        molecule.ellipse_center,
         test_center
     ):
         assert np.isclose(known, test_cent_dim, rtol=0, atol=1E-1)
@@ -30,7 +30,7 @@ def test_get_ellipsoids(molecule):
     test_diameters = conf_ellipsoids[0][1]
     print(test_diameters)
     for known, test_diam in zip(
-        molecule.ellipse_diameters['diameters'],
+        molecule.ellipse_diameters,
         test_diameters
     ):
         assert np.isclose(known, test_diam, rtol=0, atol=1E-5)

@@ -26,15 +26,16 @@ class Molecule:
 
     def __init__(self, rdkitmol, conformers):
         """
-        Initialize a :class:`Bond` instance.
+        Initialize a :class:`Molecule` instance.
 
         Parameters
         ----------
         rdkitmol : :class:`RDKit.Molecule`
             RDKit molecule to get size of.
 
-        conformers : :class:`None`
-            X
+        conformers : :class:`iterable`
+            Iterable of the conformer ids used to access the conformers
+            in the rdkit molecule.
 
         """
 
@@ -46,11 +47,10 @@ class Molecule:
         Get inertial 3D descriptors for all conformers in mol.
 
         Returns
-        ------
-        XXXX
-        :class:`tuple` of :class:`float`
-            Yields tuple of conformer id, ratio_1 and ratio_2.
-            Ratio 1 is I1/I3, ratio 2 is I2/I3.
+        -------
+        conf_ratios : :class:`dict` of :class:`tuple`
+            Dictionary of ratio_1 and ratio_2 of all conformers.
+            Key is conformer id. Ratio 1 is I1/I3, ratio 2 is I2/I3.
 
         """
 
@@ -120,7 +120,7 @@ class Molecule:
         spacing,
     ):
         """
-        Get XX for all conformers in mol.
+        Get min volume ellipsoids for all conformers in mol.
 
         Good values:
             vdwScale:0.9
@@ -129,8 +129,9 @@ class Molecule:
 
         Returns
         -------
-        :class:`tuple` of :class:`float`
-            Yields tuple of conformer id, [d1, d2, d3]
+        conf_ellipsoids : :class:`dict` of :class:`tuple`
+            Dictionary of conformer ellipsoids, key is conformer id.
+            Value is (center, diameters, rotation matrix).
 
         """
 

@@ -61,13 +61,13 @@ class EllipsoidTool:
             (N, 3) numpy array of N points.
 
         tolerance : :class:`float`, optional
-            XX
+            Tolerance used in Khachiyan algorithm.
 
         Returns
         ------
         :class:`tuple` of :class:`np.ndarray`
             Tuple of arrays containing coordinates of ellipsoid center,
-            elliipsoid radii, ellipsoid rotation matrix.
+            ellipsoid radii, ellipsoid rotation matrix.
 
         """
 

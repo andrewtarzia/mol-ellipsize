@@ -8,17 +8,17 @@ class CaseData:
 
     Attributes
     ----------
-    molecule : :class:`rdkit.Molecule`
-        The molecule to be tested.
+    points : :class:`np.ndarray`
+        (N, 3) array of points to fit ellipsoid to.
 
-    conformers : :class:`iter`
-        The smiles for the molecule.
+    center : :class:`list`
+        Center of the ellipsoid.
 
-    has_metal : :class:`bool`
-        ``True`` if a metal atom is in molecule.
+    radii : :class:`tuple`
+        Ellipsoid radii.
 
-    metal_ff : :class:`dict` or :class:`NoneType`
-        The position matrix of the molecule.
+    rotation : :class:`np.ndarray`
+        (3, 3) array of ellipsoid rotation matrix.
 
     """
 

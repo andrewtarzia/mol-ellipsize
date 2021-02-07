@@ -14,6 +14,7 @@ def ETKDG_UFF_conformers(rdkitmol, num_conformers, randomseed):
     Generate conformers with RDKit.
 
     """
+
     # Use a set randomSeed so that running the code multiple times
     # gives the same series of conformers.
     conformers = Chem.EmbedMultipleConfs(
@@ -32,7 +33,9 @@ def ETKDG_UFF_conformers(rdkitmol, num_conformers, randomseed):
 
 def plot_shapes(ratios, filename):
     """
-    Plot molecule shapes.
+    Plot molecule intertial ratios.
+
+    Saves figure at `filename`.
 
     """
 
@@ -66,6 +69,8 @@ def plot_shapes(ratios, filename):
 def plot_diameters(diameters, filename):
     """
     Plot molecule diameters.
+
+    Saves figure at `filename`.
 
     """
 
@@ -135,6 +140,14 @@ def plot_ellipsoid(
 ):
     """
     Plot an ellipsoid.
+
+    Returns
+    -------
+    fig : class:`matplotlib.figure`
+        Figure object with ellipsoid.
+
+    ax : class:`matplotlib.axis`
+        Axis object with ellipsoid.
 
     """
 
