@@ -6,13 +6,14 @@ mol-ellipsize
 Molecular size calculation based on ellipsoid fitting over N conformers.
 
 This work was developed for the work in my repository `enzyme-screen` for screening enzymatic reactions for MOF@Enzyme systems.
+Note that the implementation in this repository mirrors that in `enzyme-screen`, which also has the size calculation functionality, but is significantly more light-weight.
 
 Please contact me with any questions (<andrew.tarzia@gmail.com>) or submit an issue!
 
 Installation
 ------------
 
-To get ``stk``, you can install it with pip::
+To get ``mol-ellipsize``, you can install it with pip::
 
     $ pip install mol-ellipsize
 
