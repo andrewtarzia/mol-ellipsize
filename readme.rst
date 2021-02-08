@@ -17,7 +17,7 @@ To get ``mol-ellipsize``, you can install it with pip::
 
     $ pip install mol-ellipsize
 
-Make sure you also install rdkit, which is a dependency::
+Make sure you also install rdkit, which is a dependency (version 2019.09.2.0 was used in `enzyme_screen`)::
 
     $ conda install -c rdkit rdkit=2020
 
