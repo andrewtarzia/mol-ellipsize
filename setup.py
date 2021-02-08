@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="mol-ellipsize",
-    version="1.0.0",
+    version="1.0.1",
     author="Andrew Tarzia",
     author_email="andrew.tarzia@gmail.com",
     description="Ellipsoid fitting over conformer ensembles for calculating size.",
