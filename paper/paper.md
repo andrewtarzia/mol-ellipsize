@@ -7,13 +7,15 @@ tags:
   - cheminformatics
   - molecules
 authors:
-  - name: Andrew Tarzia^
-    orcid: 0000-0003-0872-7098
+  - name: Andrew Tarzia*
+    orcid: XX
     affiliation: "1, 2" # (Multiple affiliations must be quoted)
   - name: Christian Doonan
+    orcid: XX
     affiliation: 2
   - name: David Huang
-    affiliation: 3
+    orcid: XX
+    affiliation: 2
 affiliations:
  - name: Imperial
    index: 1
