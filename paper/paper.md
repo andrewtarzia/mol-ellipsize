@@ -44,7 +44,7 @@ In `mol-ellipsize`, we have implemented an algorithm to calculate the size of a 
 
 ![(a) Sequence of steps in an example calculation of the molecular size of $n$-octane from its SMILES string (an ASCII representation of the molecule). Multiple 3D conformers (100 in this work; a subset is shown in distinct colors in (b) along with the distribution of all diameters) are generated and the minimum-volume enclosing ellipsoid (shown schematically as black dashed lines in (b)) that encompasses a grid representation of the vdW volume (colored surfaces in (b)) of each conformer is calculated. The molecular size $d$ of a molecule is given by the minimum intermediate diameter (blue line in (c)) of all of its conformer's ellipsoids.\label{fig:size_method}](size_method.pdf)
 
-<div style="page-break-after: always"></div>
+\pagebreak
 
 |    name          | kinetic diameter |          name          |               kinetic diameter              |
 |:----------------:|:----------------:|:----------------------:|:-------------------------------------------:|
