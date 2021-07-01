@@ -48,6 +48,7 @@ def calculate_coeffs(data):
         for cid in data['diameters']
     ]
     rg_vs_size = []
+    pmi_vs_size = []
     for desc in desc_list():
         name = desc.__name__.replace('Calc', '')
         values = [
@@ -58,7 +59,10 @@ def calculate_coeffs(data):
         if name == 'RadiusOfGyration':
             for i, j in zip(midellips, values):
                 rg_vs_size.append((i, j))
-    return coeffs, rg_vs_size
+        if name == 'PMI2':
+            for i, j in zip(midellips, values):
+                pmi_vs_size.append((i, j))
+    return coeffs, rg_vs_size, pmi_vs_size
 
 
 def plot_all_rg_vs_molsize(data):
@@ -69,10 +73,10 @@ def plot_all_rg_vs_molsize(data):
     dy = [i[1] for i in data]
     ax.scatter(
         dx, dy,
-        c='gold',
-        edgecolors='white',
+        c='gray',
+        edgecolors='none',
         alpha=1.0,
-        s=20
+        s=10
     )
 
     # Set number of ticks for x-axis
@@ -82,6 +86,29 @@ def plot_all_rg_vs_molsize(data):
 
     fig.tight_layout()
     fig.savefig('rg_vs_mid.pdf', dpi=160, bbox_inches='tight')
+
+
+def plot_all_pmi_vs_molsize(data):
+
+    print(data)
+    fig, ax = plt.subplots(figsize=(5, 5))
+    dx = [i[0] for i in data]
+    dy = [i[1] for i in data]
+    ax.scatter(
+        dx, dy,
+        c='gray',
+        edgecolors='none',
+        alpha=1.0,
+        s=10
+    )
+
+    # Set number of ticks for x-axis
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.set_xlabel(r'mol-size [$\mathrm{\AA}$]', fontsize=16)
+    ax.set_ylabel(r'rdkit PMI2', fontsize=16)
+
+    fig.tight_layout()
+    fig.savefig('pmi_vs_mid.pdf', dpi=160, bbox_inches='tight')
 
 
 def main():
@@ -106,6 +133,7 @@ def main():
     N = 50
     conformer_spearmen_coefficients = {}
     all_rg_molsize_pairs = []
+    all_pmi_molsize_pairs = []
     for i, mol in enumerate(molecules[:700]):
         mol_data_file = f'rdkit_cf_data/mol_{i}.json'
         if exists(mol_data_file):
@@ -137,15 +165,18 @@ def main():
             mol_data['descriptors'] = descriptors
             with open(mol_data_file, 'w') as f:
                 json.dump(mol_data, f)
-        conformer_spearmen_coefficients[i], rg_vs_size = (
+        conformer_spearmen_coefficients[i], rg_vs_size, pmi_vs_size = (
             calculate_coeffs(mol_data)
         )
         for i in rg_vs_size:
             all_rg_molsize_pairs.append(i)
+        for i in pmi_vs_size:
+            all_pmi_molsize_pairs.append(i)
 
     df = pd.DataFrame.from_dict(conformer_spearmen_coefficients)
     df.to_csv('conf_spearmans.csv')
     plot_all_rg_vs_molsize(all_rg_molsize_pairs)
+    plot_all_pmi_vs_molsize(all_pmi_molsize_pairs)
 
 
 if __name__ == '__main__':
