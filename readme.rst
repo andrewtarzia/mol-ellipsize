@@ -10,6 +10,9 @@ Note that the implementation in this repository mirrors that in `enzyme-screen`,
 
 Please contact me with any questions (<andrew.tarzia@gmail.com>) or submit an issue!
 
+.. image:: https://zenodo.org/badge/327267391.svg
+   :target: https://zenodo.org/badge/latestdoi/327267391
+
 Installation
 ------------
 
