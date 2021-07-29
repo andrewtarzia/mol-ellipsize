@@ -81,4 +81,4 @@ I developed this code as a PhD student in the research groups of David Huang (<h
 License
 -------
 
-This project is licensed under the MIT license.
+This project is licensed under the GPLv3 license.
