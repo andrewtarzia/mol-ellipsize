@@ -73,6 +73,10 @@ The example in ``examples/arbitrary_coordinates.py`` shows the
 fitting of an ellipsoid to arbitrary points with and without the
 definition of a .Molecule.
 
+*A Youtube video of examples*
+
+See the video `here <https://www.youtube.com/watch?v=JojLBq7qmjQ>`_
+
 Contributors and Acknowledgements
 ---------------------------------
 
